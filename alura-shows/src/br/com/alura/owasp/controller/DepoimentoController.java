@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -41,8 +42,12 @@ public class DepoimentoController {
 	@RequestMapping(value = "/enviaMensagem", method = RequestMethod.POST)
 	public String enviaMensagem(
 			@Valid @ModelAttribute(value = "depoimentos") Depoimento depoimento,
-			RedirectAttributes redirect, Model model) {
+			BindingResult result,
+			RedirectAttributes redirect,
+			Model model) {
 		chamaPostsDoBanco(model);
+
+		if (result.hasErrors()) return "depoimento";
 
 		dao.salvaDepoimento(depoimento);
 		return "redirect:/depoimento";

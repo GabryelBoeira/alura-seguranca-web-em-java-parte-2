@@ -3,13 +3,16 @@
 	<h1>Depoimentos</h1>
 	<form:form action="${s:mvcUrl('DC#enviaMensagem').build()}"
 		commandName="depoimentos" method="post">
+
 		<div class="form-group">
-			<label for="titulo">Título:</label> 
+			<label for="titulo">T&#237;tulo:</label>
+			<form:errors path="titulo" cssClass="error"/>
 			<input type="text"
-				class="form-control" id="titulo" name="titulo" placeholder="Título" required="required">
+				class="form-control" id="titulo" name="titulo" placeholder="T&#237;tulo" required="required">
 		</div>
 		<div class="form-group">
 			<label for="textarea">Mensagem:</label>
+			<form:errors path="mensagem" cssClass="error"/>
 			<textarea class="form-control" id="textarea" name="mensagem"
 				placeholder="Depoimento" rows="8" required="required"></textarea>
 		</div>
@@ -22,7 +25,7 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th>Título</th>
+					<th>T&#237;tulo</th>
 					<th>Mensagem</th>
 				</tr>
 			</thead>
