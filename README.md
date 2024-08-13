@@ -7,3 +7,8 @@ Segurança web em Java parte 2: XSS, Mass Assignment e Uploads de arquivos!, [pa
 - Entenda o que pode acontecer com o ataque de Mass Assignment
 - Aprenda a proteger nossa aplicação contra o Mass Assignment
 - Veja como validar um arquivo passado pelo usuário
+
+## Certificado do curso
+  - [Certificado de conclusão](https://cursos.alura.com.br/user/gboeira/course/seguranca-web-em-java-parte-2/certificate?lang=pt_BR)
+
+**_ CURSO CONCLUIDO_**
