@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import br.com.alura.owasp.dto.UsuarioDTO;
 import br.com.alura.owasp.retrofit.GoogleWebClient;
+import br.com.alura.owasp.validator.ImagemValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,9 @@ public class UsuarioController {
 	@Autowired
 	private GoogleWebClient googleWebClient;
 
+	@Autowired
+	private ImagemValidator imagemValidator;
+
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
 		dataBinder.setAllowedFields("nome", "email", "password", "nomeImagem");
@@ -59,7 +63,13 @@ public class UsuarioController {
 			Model model, HttpSession session) throws IllegalStateException, IOException {
 		//Usuario usuarioRegistro = usuarioDTO.converterUsuario();
 
-		tratarImagem(imagem, usuarioRegistro, request);
+		boolean isValid = imagemValidator.tratarImagem(imagem, usuarioRegistro, request);
+
+		if (!isValid) {
+			redirect.addFlashAttribute("mensagem","A imagem selecionada não é válida!");
+			return "redirect:/usuario";
+		}
+
 		usuarioRegistro.getRoles().add(new Role("ROLE_USER"));
 
 		dao.salva(usuarioRegistro);
@@ -102,12 +112,5 @@ public class UsuarioController {
 		return "usuario";
 	}
 
-	private void tratarImagem(MultipartFile imagem, Usuario usuario,
-			HttpServletRequest request) throws IllegalStateException, IOException {
-		usuario.setNomeImagem(imagem.getOriginalFilename());
-		File arquivo = new File(request.getServletContext().getRealPath(
-				"/image"), usuario.getNomeImagem());
-		imagem.transferTo(arquivo);
 
-	}
 }
