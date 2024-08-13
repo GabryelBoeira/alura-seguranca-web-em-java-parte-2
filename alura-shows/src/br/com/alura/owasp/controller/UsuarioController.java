@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +35,11 @@ public class UsuarioController {
 	@Autowired
 	private GoogleWebClient googleWebClient;
 
+	@InitBinder
+	public void initBinder(WebDataBinder dataBinder) {
+		dataBinder.setAllowedFields("nome", "email", "password", "nomeImagem");
+	}
+
 	@RequestMapping("/usuario")
 	public String usuario(Model model) {
 		Usuario usuario = new Usuario();
@@ -47,10 +54,10 @@ public class UsuarioController {
 
 	@RequestMapping(value = "/registrar", method = RequestMethod.POST)
 	public String registrar(MultipartFile imagem,
-			@ModelAttribute("usuarioRegistro") UsuarioDTO usuarioDTO,
+			@ModelAttribute("usuarioRegistro") Usuario usuarioRegistro,
 			RedirectAttributes redirect, HttpServletRequest request,
 			Model model, HttpSession session) throws IllegalStateException, IOException {
-		Usuario usuarioRegistro = usuarioDTO.converterUsuario();
+		//Usuario usuarioRegistro = usuarioDTO.converterUsuario();
 
 		tratarImagem(imagem, usuarioRegistro, request);
 		usuarioRegistro.getRoles().add(new Role("ROLE_USER"));
