@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import br.com.alura.owasp.dto.UsuarioDTO;
 import br.com.alura.owasp.retrofit.GoogleWebClient;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +47,10 @@ public class UsuarioController {
 
 	@RequestMapping(value = "/registrar", method = RequestMethod.POST)
 	public String registrar(MultipartFile imagem,
-			@ModelAttribute("usuarioRegistro") Usuario usuarioRegistro,
+			@ModelAttribute("usuarioRegistro") UsuarioDTO usuarioDTO,
 			RedirectAttributes redirect, HttpServletRequest request,
 			Model model, HttpSession session) throws IllegalStateException, IOException {
+		Usuario usuarioRegistro = usuarioDTO.converterUsuario();
 
 		tratarImagem(imagem, usuarioRegistro, request);
 		usuarioRegistro.getRoles().add(new Role("ROLE_USER"));
